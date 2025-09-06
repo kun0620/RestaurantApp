@@ -1,9 +1,14 @@
 package com.example.restaurantapp
 
+import java.util.Date
 data class Order(
-    var id: String? = null,
-    var tableId: String = "",
-    var items: List<OrderedItem> = listOf(),
-    var totalAmount: Double = 0.0,
-    var status: String = "รอดำเนินการ" // "รอดำเนินการ", "เสร็จสิ้น", "ชำระเงินแล้ว"
+    val id: String? = null,
+    val tableId: String = "",
+    val items: List<OrderedItem>? = null,
+    val totalAmount: Double = 0.0,
+    val completed: Boolean = false,
+    val cookingComplete: Boolean = false,
+    val timestamp: Date? = null,
+    val paymentMethod: String = ""
 )
+

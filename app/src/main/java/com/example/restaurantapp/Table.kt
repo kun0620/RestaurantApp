@@ -1,7 +1,8 @@
 package com.example.restaurantapp
 
 data class Table(
-    var id: String? = null,
-    var tableNumber: Int = 0,
-    var status: String = "ว่าง" // "ว่าง" หรือ "ไม่ว่าง"
+    val id: String? = null,
+    val tableNumber: Int = 0,
+    val status: String = "",
+    val tableId: String = "" // เพิ่มบรรทัดนี้
 )

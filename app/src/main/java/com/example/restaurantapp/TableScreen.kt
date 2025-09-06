@@ -1,5 +1,6 @@
 package com.example.restaurantapp
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -22,6 +23,7 @@ fun TableScreen(navController: NavHostController) {
 
     DisposableEffect(Unit) {
         val listenerRegistration = firestoreDb.collection("tables")
+            .orderBy("tableNumber")
             .addSnapshotListener { snapshot, e ->
                 if (e != null) return@addSnapshotListener
                 if (snapshot != null) {
@@ -34,10 +36,19 @@ fun TableScreen(navController: NavHostController) {
         onDispose { listenerRegistration.remove() }
     }
 
+    // ฟังก์ชันสำหรับอัปเดตสถานะโต๊ะ
+    fun updateTableStatus(table: Table, status: String) {
+        table.id?.let { id ->
+            firestoreDb.collection("tables").document(id)
+                .update("status", status)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -61,16 +72,23 @@ fun TableScreen(navController: NavHostController) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(tables) { table ->
-                TableCard(table = table)
+                TableCard(table = table) {
+                    if (table.status == "ไม่ว่าง") {
+                        // นำทางไปยังหน้าจอชำระเงินพร้อมส่ง Document ID ของโต๊ะ
+                        navController.navigate("paymentScreen/${table.id}")
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun TableCard(table: Table) {
+fun TableCard(table: Table, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
     ) {
         Column(
             modifier = Modifier

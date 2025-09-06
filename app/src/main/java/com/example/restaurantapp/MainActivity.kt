@@ -53,6 +53,15 @@ fun AppNavigation(navController: NavHostController) {
         composable("salesReport") {
             SalesReportScreen(navController)
         }
+        composable("kitchenScreen") {
+            KitchenScreen(navController)
+        }
+        composable("paymentScreen/{tableId}") { backStackEntry ->
+            val tableId = backStackEntry.arguments?.getString("tableId")
+            if (tableId != null) {
+                PaymentScreen(navController, tableId)
+            }
+        }
     }
 }
 
@@ -79,6 +88,10 @@ fun HomeScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { navController.navigate("salesReport") }) {
             Text("รายงานยอดขาย")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { navController.navigate("kitchenScreen") }) {
+            Text("หน้าจอครัว")
         }
     }
 }

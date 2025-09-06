@@ -12,8 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun SalesReportScreen(navController: NavHostController) {
@@ -56,7 +55,7 @@ fun SalesReportScreen(navController: NavHostController) {
 
         val totalSales = orders.sumOf { it.totalAmount }
         Text(
-            "ยอดขายรวมทั้งหมด: ${String.format("%.2f", totalSales)} บาท",
+            "ยอดขายรวมทั้งหมด: ${String.format(Locale.US,"%.2f", totalSales)} บาท",
             style = MaterialTheme.typography.headlineSmall
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -90,7 +89,7 @@ fun OrderSummaryCard(order: Order) {
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
-                "ยอดรวม: ${String.format("%.2f", order.totalAmount)} บาท",
+                "ยอดรวม: ${String.format(Locale.US,"%.2f", order.totalAmount)} บาท",
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -98,7 +97,7 @@ fun OrderSummaryCard(order: Order) {
 
             order.items?.forEach { orderedItem ->
                 Text(
-                    text = "- ${orderedItem.itemName} x${orderedItem.quantity} (${String.format("%.2f", orderedItem.price * orderedItem.quantity)} บาท)",
+                    text = "- ${orderedItem.itemName} x${orderedItem.quantity} (${String.format(Locale.US,"%.2f", orderedItem.price * orderedItem.quantity)} บาท)",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(start = 8.dp)
                 )
